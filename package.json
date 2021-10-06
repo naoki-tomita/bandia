@@ -15,7 +15,8 @@
     "access": "public"
   },
   "jest": {
-    "preset": "ts-jest"
+    "preset": "ts-jest",
+    "testPathIgnorePatterns": ["example"]
   },
   "scripts": {
     "test": "jest",
