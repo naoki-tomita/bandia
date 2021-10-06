@@ -1,31 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mock = void 0;
-var chars = "abcdefghijklmnopqrstuvwxyz";
+const chars = "abcdefghijklmnopqrstuvwxyz";
 function random(count) {
-    return Array(count).fill(null).map(function () { return chars[Math.round(Math.random() * chars.length)]; }).join("");
+    return Array(count).fill(null).map(() => chars[Math.round(Math.random() * chars.length)]).join("");
 }
 function mock() {
     return inner();
 }
 exports.mock = mock;
 function inner() {
-    var inner = {};
-    var id = random(5);
+    const inner = {};
+    const id = random(5);
     return new Proxy({ __id__: id }, {
-        get: function (_, key) {
-            var _a;
+        get(_, key) {
             if (key === "__id__")
-                return "#" + id;
+                return `#${id}`;
             if (key === "then")
                 return;
             if (typeof key === "symbol")
                 return;
             if (key === "toString")
-                return function () { return "mock#" + id; };
+                return () => `mock#${id}`;
             if (key === "toJSON")
-                return function () { return JSON.stringify({ id: "#" + id }); };
-            return inner[key] = (_a = inner[key]) !== null && _a !== void 0 ? _a : jest.fn();
+                return () => JSON.stringify({ id: `#${id}` });
+            return inner[key] = inner[key] ?? jest.fn();
         }
     });
 }
