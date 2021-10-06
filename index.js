@@ -23,7 +23,9 @@ function inner() {
             if (key === "toString")
                 return () => `mock#${id}`;
             if (key === "toJSON")
-                return () => JSON.stringify({ id: `#${id}` });
+                return () => ({ id: `#${id}` });
+            if (key === "_isAllArgsFunctionMatcher")
+                return false;
             return inner[key] = inner[key] ?? jest.fn();
         }
     });

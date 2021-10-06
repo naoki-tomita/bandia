@@ -16,7 +16,8 @@ function inner<T extends { [key: string]: (...args: any) => any }>() {
       if (key === "then") return;
       if (typeof key === "symbol") return;
       if (key === "toString") return () => `mock#${id}`;
-      if (key === "toJSON") return () => JSON.stringify({ id: `#${id}` });
+      if (key === "toJSON") return () => ({ id: `#${id}` });
+      if (key === "_isAllArgsFunctionMatcher") return false;
       return inner[key] = inner[key] ?? jest.fn();
     }
   });
