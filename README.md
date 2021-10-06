@@ -1,3 +1,5 @@
+[![Node.js CI](https://github.com/naoki-tomita/bandia/actions/workflows/node.js.yml/badge.svg)](https://github.com/naoki-tomita/bandia/actions/workflows/node.js.yml)
+
 # bandia
 Create mock object for Jest.
 
