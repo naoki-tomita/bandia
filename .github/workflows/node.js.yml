@@ -31,7 +31,7 @@ jobs:
     - name: Run unit test.
       run: yarn test
     - name: Install dependencies for integration test.
-      run: yarn
+      run: yarn && yarn run link
       working-directory: example
     - name: Run integration test.
       run: yarn jest
