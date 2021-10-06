@@ -36,3 +36,4 @@ jobs:
     - name: Run integration test.
       run: yarn jest
       working-directory: example
+    - run: mkdir -p /home/runner/.npm
