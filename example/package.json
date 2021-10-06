@@ -1,0 +1,20 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "link": "cd .. && yarn link && cd - && yarn link @kojiro.ueda/bandia"
+  },
+  "dependencies": {
+    "@types/jest": "^27.0.2",
+    "@types/jest-when": "^2.7.3",
+    "jest": "^27.2.4",
+    "jest-when": "^3.4.1",
+    "ts-jest": "^27.0.5"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "restoreMocks": true
+  }
+}
