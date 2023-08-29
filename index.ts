@@ -3,14 +3,20 @@ function random(count: number) {
   return Array(count).fill(null).map(() => chars[Math.round(Math.random() * chars.length)]).join("");
 }
 
-export function mock<T extends {}>() {
+type OverrideIfFunction<T> = T extends (...args: any[]) => any ? jest.Mock<ReturnType<T>, Parameters<T>> : T
+
+type MockedObject<T> = {
+  [key in keyof T]: OverrideIfFunction<T[key]>;
+}
+
+export function mock<T extends {}>(): T & MockedObject<T> {
   return inner<T>();
 }
 
 function inner<T extends { [key: string]: (...args: any) => any }>() {
   const inner: { [key in string | number]: jest.Mock } = {};
   const id = random(5)
-  return new Proxy({ __id__: id } as unknown as T & {[key in keyof T]: jest.Mock<ReturnType<T[key]>, Parameters<T[key]>>}, {
+  return new Proxy({ __id__: id } as unknown as (T & MockedObject<T>), {
     get(_, key) {
       if (key === "__id__") return `#${id}`;
       if (key === "then") return;
