@@ -5,11 +5,11 @@ const chars = "abcdefghijklmnopqrstuvwxyz";
 function random(count) {
     return Array(count).fill(null).map(() => chars[Math.round(Math.random() * chars.length)]).join("");
 }
-function mock() {
-    return inner();
+function mock(overrideProps) {
+    return inner(overrideProps);
 }
 exports.mock = mock;
-function inner() {
+function inner(overrideProps) {
     const inner = {};
     const id = random(5);
     return new Proxy({ __id__: id }, {
@@ -26,6 +26,8 @@ function inner() {
                 return () => ({ id: `#${id}` });
             if (key === "_isAllArgsFunctionMatcher")
                 return false;
+            if (overrideProps?.[key] != null)
+                return overrideProps?.[key];
             return inner[key] = inner[key] ?? jest.fn();
         }
     });

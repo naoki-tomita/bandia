@@ -3,6 +3,8 @@ type OverrideIfFunction<T> = T extends (...args: any[]) => any ? jest.Mock<Retur
 type MockedObject<T> = {
     [key in keyof T]: OverrideIfFunction<T[key]>;
 };
-export declare function mock<T extends {}>(): T & MockedObject<T>;
+export declare function mock<T extends {}>(overrideProps?: {
+    [key in keyof T]?: T[key];
+}): T & MockedObject<T>;
 export {};
 //# sourceMappingURL=index.d.ts.map

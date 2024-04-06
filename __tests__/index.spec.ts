@@ -2,6 +2,7 @@ import { mock } from "..";
 
 describe("#mock", () => {
   class A {
+    constructor(readonly prop: number, readonly child: A) {}
     method1(arg1: string, arg2: number): string { throw Error() }
     method2(): A { throw Error() }
     method3(): Promise<A> { throw Error() }
@@ -37,5 +38,12 @@ describe("#mock", () => {
 
     a.method3.mockResolvedValue(b);
     await expect(a.method3()).resolves.toEqual(b);
+  });
+
+  it("should get overrided value", async () => {
+    const b = mock<A>({ prop: 40 });
+    const a = mock<A>({ prop: 30, child: b });
+    expect(a.prop).toBe(30);
+    expect(a.child).toBe(b);
   });
 });
