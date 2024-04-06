@@ -5,11 +5,13 @@ function random(count: number) {
 
 type OverrideIfFunction<T> = T extends (...args: any[]) => any ? jest.Mock<ReturnType<T>, Parameters<T>> : T
 
+type FunctionExcluded<T> = { [key in keyof T]?: T[key] extends (...args: any[]) => any ? never : T[key] };
+
 type MockedObject<T> = {
   [key in keyof T]: OverrideIfFunction<T[key]>;
 }
 
-export function mock<T extends {}>(overrideProps?: { [key in keyof T]?: T[key] }): T & MockedObject<T> {
+export function mock<T extends {}>(overrideProps?: FunctionExcluded<T>): T & MockedObject<T> {
   return inner<T>(overrideProps);
 }
 
