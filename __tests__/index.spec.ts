@@ -46,4 +46,13 @@ describe("#mock", () => {
     expect(a.prop).toBe(30);
     expect(a.child).toBe(b);
   });
+
+  it("should mock function that named as 'get'", () => {
+    class B {
+      get(): string { throw Error() }
+    }
+    const b = mock<B>();
+    b.get.mockReturnValue("foo");
+    expect(b.get()).toBe("foo");
+  });
 });
