@@ -1,28 +1,94 @@
 {
   "name": "@kojiro.ueda/bandia",
   "version": "0.0.6",
-  "main": "index.js",
-  "types": "index.d.ts",
   "license": "MIT",
   "private": false,
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./jest": {
+      "import": {
+        "types": "./dist/esm/jest.d.ts",
+        "default": "./dist/esm/jest.js"
+      },
+      "require": {
+        "types": "./dist/cjs/jest.d.ts",
+        "default": "./dist/cjs/jest.js"
+      }
+    },
+    "./vitest": {
+      "types": "./dist/esm/vitest.d.ts",
+      "default": "./dist/esm/vitest.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "jest": [
+        "dist/cjs/jest.d.ts"
+      ],
+      "vitest": [
+        "dist/esm/vitest.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "peerDependencies": {
+    "jest": ">=29",
+    "vitest": ">=2"
+  },
+  "peerDependenciesMeta": {
+    "jest": {
+      "optional": true
+    },
+    "vitest": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@types/jest": "^29.5.4",
     "jest": "^29.6.4",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vite": "^7",
+    "vitest": "^5.1.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "jest": {
-    "preset": "ts-jest",
-    "testPathIgnorePatterns": [
-      "example"
-    ]
+    "testMatch": [
+      "<rootDir>/__tests__/jest/**/*.spec.ts"
+    ],
+    "transform": {
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "tsconfig": "__tests__/tsconfig.json"
+        }
+      ]
+    }
   },
   "scripts": {
-    "test": "jest",
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json && tsc -p tsconfig.esm.json && node -e \"require('fs').writeFileSync('dist/esm/package.json','{\\\"type\\\":\\\"module\\\"}\\n')\"",
     "pretest": "yarn build",
-    "build": "tsc"
+    "test": "yarn test:jest && yarn test:vitest",
+    "test:jest": "jest",
+    "test:vitest": "vitest run",
+    "typecheck": "tsc -p __tests__/tsconfig.json"
   }
 }
