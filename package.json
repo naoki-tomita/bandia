@@ -89,6 +89,7 @@
     "test": "yarn test:jest && yarn test:vitest",
     "test:jest": "jest",
     "test:vitest": "vitest run",
-    "typecheck": "tsc -p __tests__/tsconfig.json"
+    "typecheck": "tsc -p __tests__/tsconfig.json",
+    "prepublishOnly": "yarn build"
   }
 }
