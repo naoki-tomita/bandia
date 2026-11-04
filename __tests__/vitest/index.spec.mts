@@ -1,4 +1,5 @@
-import { mock } from "..";
+import { describe, it, expect } from "vitest";
+import { mock } from "@kojiro.ueda/bandia/vitest";
 
 describe("#mock", () => {
   class A {
@@ -7,7 +8,7 @@ describe("#mock", () => {
     method2(): A { throw Error() }
     method3(): Promise<A> { throw Error() }
   }
-  it("should create jest.fn", () => {
+  it("should create vi.fn", () => {
     const a = mock<A>();
     expect(a.method1.mockReturnValue).toBeDefined();
     expect(typeof a.method1.mockReturnValue).toBe("function");
