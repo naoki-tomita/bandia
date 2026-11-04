@@ -3,6 +3,8 @@
 # bandia
 Create mock object for Jest and Vitest.
 
+Inspired by [MockK](https://mockk.io/) for Kotlin: just pass a type, and every method of the mock becomes a mock function (`jest.fn()` / `vi.fn()`).
+
 ## install
 
 ```sh
