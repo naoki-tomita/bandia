@@ -1,0 +1,49 @@
+# v* タグの push で npm に staged publish する。
+# CI は「ステージ」までで、公開の確定は npm 側で 2FA 付きの承認（npm stage approve）が必要。
+#
+# npm 側の Trusted Publisher 設定:
+#   - Organization or user: naoki-tomita
+#   - Repository: bandia
+#   - Workflow filename: publish.yml
+#   - Environment: (空欄)
+#   - Allowed actions: npm stage publish
+
+name: Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  id-token: write # npm の Trusted Publishing (OIDC) に必要
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24.x
+        cache: 'yarn'
+        registry-url: 'https://registry.npmjs.org'
+    # staged publish には npm 11.15.0 以上が必要
+    - name: Install npm CLI.
+      run: npm install -g npm@11.21.2
+    - name: Check tag matches package.json version.
+      run: |
+        version="$(node -p "require('./package.json').version")"
+        if [ "v${version}" != "${GITHUB_REF_NAME}" ]; then
+          echo "::error::Tag ${GITHUB_REF_NAME} does not match package.json version ${version}"
+          exit 1
+        fi
+    - name: Install dependencies.
+      run: yarn --frozen-lockfile
+    - name: Run unit test (Jest and Vitest).
+      run: yarn test
+    - name: Type check tests.
+      run: yarn typecheck
+    - name: Stage publish to npm.
+      run: npm stage publish --access public
