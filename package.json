@@ -1,6 +1,15 @@
 {
   "name": "@kojiro.ueda/bandia",
   "version": "0.1.0",
+  "description": "Create mock object for Jest and Vitest, inspired by MockK.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naoki-tomita/bandia.git"
+  },
+  "homepage": "https://github.com/naoki-tomita/bandia#readme",
+  "bugs": {
+    "url": "https://github.com/naoki-tomita/bandia/issues"
+  },
   "license": "MIT",
   "private": false,
   "main": "dist/cjs/index.js",
